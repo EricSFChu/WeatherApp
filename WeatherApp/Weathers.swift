@@ -11,10 +11,10 @@ import Foundation
 
 
 class Weathers {
-    var _date: NSDate!
-    var _weatherLabel: String!
-    var _highTemp: String!
-    var _lowTemp: String!
+    private var _date: NSDate!
+    private var _weatherLabel: String!
+    private var _highTemp: String!
+    private var _lowTemp: String!
     
     enum DayOfWeek: Int {
         case Sunday = 1, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
