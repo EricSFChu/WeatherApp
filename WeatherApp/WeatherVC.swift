@@ -49,15 +49,18 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
             currentLocation = locationManager.location
             Location.sharedInstance.latitude = currentLocation.coordinate.latitude
             Location.sharedInstance.longitude = currentLocation.coordinate.longitude
-            DispatchQueue.global().async{
-                self.currentWeather.downloadWeatherDetails {
-                    let addTime: DispatchTimeInterval = .milliseconds(500)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + addTime){
-                        self.updateMainUI()
-                    }
-                }
+        
+            self.currentWeather.downloadWeatherDetails {
+                    
+                self.updateMainUI()
+                    
             }
-            loadForecast()
+            
+            loadForecast(){
+                
+                self.tableView.reloadData()
+            
+            }
         } else if CLLocationManager.authorizationStatus() == .denied {
             if let url = NSURL(string:UIApplicationOpenSettingsURLString) {
                     UIApplication.shared.open(url as URL)
@@ -91,7 +94,7 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
     }
     
     
-    func loadForecast() {
+    func loadForecast(completed: @escaping DownloadComplete) {
         let forecastURL = URL(string: FORECAST_URL)!
         Alamofire.request(forecastURL).responseJSON { response in
             let result = response.result
@@ -103,7 +106,7 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
                 }
             }
             self.weather.remove(at: 0)
-            self.tableView.reloadData()
+        completed()
         }
     }
     

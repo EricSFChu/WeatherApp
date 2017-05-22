@@ -85,7 +85,7 @@ class CurrentWeather {
                     self._currentTemp = round(10*(1.8*(currentTemp-273)+32)/10)
                 }
             }
-        }
         completed()
+        }
     }
 }
